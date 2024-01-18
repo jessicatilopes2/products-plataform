@@ -8,13 +8,12 @@ datasource db {
 }
 
 model Product {
-  id String @id @default(uuid())
-  title String
+  id          String @id @default(uuid())
+  title       String
   description String
-  brand String
-  category String
-  thumbnail String
+  brand       String
+  category    String
+  thumbnail   String
 
   @@map("products")
 }
-
