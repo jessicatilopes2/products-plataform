@@ -1,10 +1,12 @@
-version: '3'
 services:
-  web:
-    build: .
-    command: npm run dev
+  db:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=senha_super_segura
+      - POSTGRES_DB=meu-postgres
     volumes:
-      - .:/src
+      - /var/lib/postgresql/data
     ports:
-      - "3001:3001"
-      
+      - 5432:5432
