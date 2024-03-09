@@ -1,75 +1,42 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateProductDto } from './dto/update-product.dto';
-import axios from 'axios';
-
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProductDto } from './dto/create-product.dto';
 @Injectable()
 export class ProductsService {
-  async findAll() {
-    const options = {
-      method: 'GET',
-      url: 'https://dummyjson.com/products',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: String,
-        title: String,
-        description: String,
-        price: Number,
-        discountPercentage: Number,
-        rating: Number,
-        stock: Number,
-        brand: String,
-        category: String,
-        thumbnail: String,
-        images: [],
-      }),
-    };
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  }
-  async findOne() {
-    const options = {
-      method: 'GET',
-      url: 'https://dummyjson.com/products/2',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id: Number,
-        title: String,
-        description: String,
-        price: Number,
-        discountPercentage: Number,
-        rating: Number,
-        stock: Number,
-        brand: String,
-        category: String,
-        thumbnail: String,
-        images: [],
-      }),
-    };
-    axios
-      .request(options)
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  }
+  
+  constructor(private readonly prisma: PrismaService){}
 
-  async update(id: number, body: UpdateProductDto) {
-    const response = await axios.put(`${process.env.DUMMY_CONFIG}/${id}`, {
-      name: body,
+  async create(data: CreateProductDto){
+    return this.prisma.product.create({
+      data,
     });
-    return response.data;
+  }
+  
+  async findAll() {
+    return this.prisma.product.findMany();
   }
 
-  async remove(id: number) {
-    const response = await axios.delete(`${process.env.DUMMY_CONFIG}/${id}`);
-    return response.data;
+  async findOne(id: string) {
+    return this.prisma.product.findUnique({
+      where: {
+        id,
+      }
+    })
   }
+
+
+  async update(id: string, data : UpdateProductDto) {
+    return this.prisma.product.update({
+      data: {
+        
+      }
+      where: {
+        id,
+      }
+    })
+  }
+
+
+  async remove(id: number) {}
 }
