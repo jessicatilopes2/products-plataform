@@ -35,6 +35,15 @@ export class ProductsService {
     })
   }
 
+  async updatePartial(id: string, data : UpdateProductDto) {
+    return this.prisma.product.update({
+      data,
+      where: {
+        id,
+      }
+    })
+  }
+
 
   async remove(id: number) {}
 }
